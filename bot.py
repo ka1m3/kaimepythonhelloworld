@@ -41,9 +41,9 @@ def help_command(message):
 @bot.message_handler(commands=['game'])
 def game_start(message):
     """Запуск игры «Угадай число»."""
-    number = random.randint(1, 100)
+    number = random.randint(1, 200)
     games[message.chat.id] = number
-    bot.send_message(message.chat.id, 'Я загадал число от 1 до 100. Попробуй угадать!')
+    bot.send_message(message.chat.id, 'Я загадал число от 1 до 200. Попробуй угадать!')
 
 
 @bot.message_handler(content_types=['text'])
@@ -61,7 +61,7 @@ def handle_text(message):
 
         secret = games[message.chat.id]
         if guess == secret:
-            bot.send_message(message.chat.id, f'🎉 Поздравляю! Ты угадал число {secret}!')
+            bot.send_message(message.chat.id, f'Поздравляю! Ты угадал число {secret}!')
             del games[message.chat.id]
         elif guess < secret:
             bot.send_message(message.chat.id, 'Моё число больше.')
