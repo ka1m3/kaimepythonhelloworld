@@ -1,6 +1,7 @@
 import telebot
 from telebot import types
 import random
+from datetime import datetime
 
 # Вставьте сюда токен от @BotFather в Telegram
 BOT_TOKEN = 'YOUR_TOKEN_HERE'
@@ -34,7 +35,8 @@ def help_command(message):
         'Доступные команды:\n'
         '/start — начать\n'
         '/help — помощь\n'
-        '/game — игра «Угадай число»',
+        '/game — игра «Угадай число»\n'
+        '/time — текущее время',
     )
 
 
@@ -44,6 +46,13 @@ def game_start(message):
     number = random.randint(1, 100)
     games[message.chat.id] = number
     bot.send_message(message.chat.id, 'Я загадал число от 1 до 100. Попробуй угадать!')
+
+
+@bot.message_handler(commands=['time'])
+def time_command(message):
+    """Показывает текущее время."""
+    now = datetime.now().strftime('%H:%M:%S')
+    bot.send_message(message.chat.id, f'Текущее время: {now}')
 
 
 @bot.message_handler(content_types=['text'])
@@ -61,7 +70,7 @@ def handle_text(message):
 
         secret = games[message.chat.id]
         if guess == secret:
-            bot.send_message(message.chat.id, f'🎉 Поздравляю! Ты угадал число {secret}!')
+            bot.send_message(message.chat.id, f'Поздравляю! Ты угадал число {secret}!')
             del games[message.chat.id]
         elif guess < secret:
             bot.send_message(message.chat.id, 'Моё число больше.')
